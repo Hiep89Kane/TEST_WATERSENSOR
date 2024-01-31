@@ -1,0 +1,5 @@
+../Core/Src/CAP_SENSOR/Uv_CapSS.c:12:6:UV_CAPSS_init	16	static
+../Core/Src/CAP_SENSOR/Uv_CapSS.c:25:6:UV_CAPSS_putc	24	static
+../Core/Src/CAP_SENSOR/Uv_CapSS.c:54:6:UV_CAPSS_puts	32	static
+../Core/Src/CAP_SENSOR/Uv_CapSS.c:67:6:UV_CAPSS_putArr	32	static
+../Core/Src/CAP_SENSOR/Uv_CapSS.c:77:6:UV_CAPSS_periodic_poll	8	static

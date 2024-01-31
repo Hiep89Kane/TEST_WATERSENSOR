@@ -1,0 +1,9 @@
+../Core/Src/PUTCHAR/putchar.c:9:7:uart1_putc	24	static
+../Core/Src/PUTCHAR/putchar.c:21:7:uart1_puts	24	static
+../Core/Src/PUTCHAR/putchar.c:33:8:PUTCHAR_Uart1TxCompletedHandle	8	static
+../Core/Src/PUTCHAR/putchar.c:42:9:uart2_putc	24	static
+../Core/Src/PUTCHAR/putchar.c:54:9:uart2_puts	24	static
+../Core/Src/PUTCHAR/putchar.c:66:10:PUTCHAR_Uart2TxCompletedHandle	8	static
+../Core/Src/PUTCHAR/putchar.c:96:9:uart4_putc	16	static
+../Core/Src/PUTCHAR/putchar.c:103:9:uart4_puts	16	static
+../Core/Src/PUTCHAR/putchar.c:110:10:PUTCHAR_Uart4TxCompletedHandle	8	static

@@ -1,0 +1,10 @@
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:3:9:fifo_init	24	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:12:6:fifo_deinit	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:23:10:size_buff_free	24	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:36:10:is_overload	24	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:42:6:fifo_give_byte	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:67:10:give_array	40	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:95:9:fifo_give_array	40	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:129:10:fifo_availeble	24	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:137:9:fifo_read_byte	24	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/fifo/fifo.c:144:6:fifo_read_array	40	static

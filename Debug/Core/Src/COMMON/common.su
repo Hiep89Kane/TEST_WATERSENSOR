@@ -1,0 +1,10 @@
+../Core/Src/COMMON/common.c:5:6:delay_ms	16	static
+../Core/Src/COMMON/common.c:11:6:uncase_to_case	24	static
+../Core/Src/COMMON/common.c:19:6:strchecksum	24	static
+../Core/Src/COMMON/common.c:38:9:Str2HexChar	24	static
+../Core/Src/COMMON/common.c:70:6:HexChar2Str	32	static
+../Core/Src/COMMON/common.c:90:10:Str2Num	24	static
+../Core/Src/COMMON/common.c:105:6:Num2Str	40	static
+../Core/Src/COMMON/common.c:132:6:lstrncpy	32	static
+../Core/Src/COMMON/common.c:142:6:lstrncat	32	static
+../Core/Src/COMMON/common.c:154:19:Get_Edge	24	static

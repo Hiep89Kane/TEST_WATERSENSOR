@@ -1,0 +1,11 @@
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:9:14:timer_getTick	8	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:19:6:timer_periodic_poll	8	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:36:6:timer_set	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:58:6:timer_reset	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:79:6:timer_restart	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:97:9:timer_expired	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:119:6:timer_stop	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:133:6:timer_makeExpired	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:145:6:timer_pause	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:161:6:timer_continue	16	static
+D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/timeVirtural/timer_virtural.c:179:14:timer_remaining	16	static

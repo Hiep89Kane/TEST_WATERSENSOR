@@ -1,0 +1,10 @@
+Lỗi Quá Sáng
+Lỗi Quá Tối
+Lỗi Sụt áp < 4V
+Lỗi quá dòng > 100mA
+Lỗi led đỏ 
+Lỗi Led xanh_1
+Lỗi Led xanh_0
+Lỗi dây trắng=1
+Lỗi dây trắng=0
+Calib that bai
