@@ -11,6 +11,7 @@
 #include "kalman/kalman.h"
 
 #include "putchar.h"
+#include "flash.h"
 
 #include "Adafruit_INA219.h"
 #include "lcd_i2c.h"
@@ -18,4 +19,5 @@
 #include "init_MCU.h"
 #include "Uv_CapSS.h"
 #include "CapSS_interface.h"
+#include "testDcMotor.h"
 #include "testWaterSensor.h"

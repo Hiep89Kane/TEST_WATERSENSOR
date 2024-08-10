@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "myHeader.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -79,7 +79,8 @@ static void MX_TIM7_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+timer_virtual_t _timerTestMotor;
+PositionMotor_t pos,posOlder;
 /* USER CODE END 0 */
 
 /**
@@ -95,7 +96,6 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -124,6 +124,10 @@ int main(void)
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
   testWaterSensorInit();
+//  timer_set(&_timerTestMotor, 10000);
+//  pos=_POS_MID;
+//  posOlder=_POS_LEFT;
+//  MotorGotoPosition(&TWMOTOR,pos,5000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -136,6 +140,17 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       testWaterSensorLoop();
+//      if(timer_expired(&_timerTestMotor)){
+//	  timer_restart(&_timerTestMotor);
+//	  if(pos==_POS_LEFT)pos=_POS_MID;
+//	  else if(pos==_POS_RIGHT)pos=_POS_MID;
+//	  else if(pos==_POS_MID){
+//	      if(posOlder==_POS_LEFT)pos=_POS_RIGHT;
+//	      else if(posOlder==_POS_RIGHT)pos=_POS_LEFT;
+//	      posOlder=pos;
+//	  }
+//	  MotorGotoPosition(&TWMOTOR,pos,10000);
+//      }
   }
   /* USER CODE END 3 */
 }
@@ -396,16 +411,6 @@ static void MX_TIM3_Init(void)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
   sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  __HAL_TIM_DISABLE_OCxPRELOAD(&htim3, TIM_CHANNEL_1);
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  __HAL_TIM_DISABLE_OCxPRELOAD(&htim3, TIM_CHANNEL_2);
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     Error_Handler();
@@ -699,14 +704,15 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, SSDRAIN_SIGNAL_Pin|SS_5V_CTRL_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, PC14_Pin|LED2_BL_Pin|BUZ_Pin|LED1_YE_Pin
                           |DIM_TRIAC_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, FAN_Pin|RL_SS_STEAM_Pin|TO_MASS_Pin|BLE_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(SS_5V_CTRL_GPIO_Port, SS_5V_CTRL_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, FAN_Pin|RL_SS_STEAM_Pin|TO_MASS_Pin|BLE_EN_Pin
+                          |MOTOR_IN2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RL_DRAIN_Pin|RL_WHIRL_Pin|RL_AIR_Pin|RL_STEAM100_Pin
@@ -714,26 +720,21 @@ static void MX_GPIO_Init(void)
                           |RL_SOL_COM_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(PD0_GPIO_Port, PD0_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(MOTOR_IN1_GPIO_Port, MOTOR_IN1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, FET_DOME_LIGHT_Pin|FET_SOL_AF_Pin|FET_SOL_STEAM_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(SSWATER_SIGNAL_GPIO_Port, SSWATER_SIGNAL_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, LED24V_BLUE_Pin|LED24V_GREEN_Pin|SSWATER_SIGNAL_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : SSDRAIN_LOGIC_Pin IN_SAFETY_Pin BLE_STATE_Pin SSWATER_LOGIC_Pin */
-  GPIO_InitStruct.Pin = SSDRAIN_LOGIC_Pin|IN_SAFETY_Pin|BLE_STATE_Pin|SSWATER_LOGIC_Pin;
+  /*Configure GPIO pins : SSDRAIN_LOGIC_Pin SSDRAIN_SIGNAL_Pin IN_SAFETY_Pin BLE_STATE_Pin
+                           SSWATER_LOGIC_Pin */
+  GPIO_InitStruct.Pin = SSDRAIN_LOGIC_Pin|SSDRAIN_SIGNAL_Pin|IN_SAFETY_Pin|BLE_STATE_Pin
+                          |SSWATER_LOGIC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : SSDRAIN_SIGNAL_Pin */
-  GPIO_InitStruct.Pin = SSDRAIN_SIGNAL_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-  HAL_GPIO_Init(SSDRAIN_SIGNAL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PC14_Pin LED2_BL_Pin LED1_YE_Pin */
   GPIO_InitStruct.Pin = PC14_Pin|LED2_BL_Pin|LED1_YE_Pin;
@@ -798,12 +799,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(DIM_TRIAC_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PD0_Pin */
-  GPIO_InitStruct.Pin = PD0_Pin;
+  /*Configure GPIO pin : MOTOR_IN2_Pin */
+  GPIO_InitStruct.Pin = MOTOR_IN2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(PD0_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(MOTOR_IN2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MOTOR_IN1_Pin */
+  GPIO_InitStruct.Pin = MOTOR_IN1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(MOTOR_IN1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : FET_DOME_LIGHT_Pin FET_SOL_AF_Pin FET_SOL_STEAM_Pin */
   GPIO_InitStruct.Pin = FET_DOME_LIGHT_Pin|FET_SOL_AF_Pin|FET_SOL_STEAM_Pin;
@@ -819,12 +827,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(PB3_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SSWATER_SIGNAL_Pin */
-  GPIO_InitStruct.Pin = SSWATER_SIGNAL_Pin;
+  /*Configure GPIO pins : LED24V_BLUE_Pin LED24V_GREEN_Pin SSWATER_SIGNAL_Pin */
+  GPIO_InitStruct.Pin = LED24V_BLUE_Pin|LED24V_GREEN_Pin|SSWATER_SIGNAL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
-  HAL_GPIO_Init(SSWATER_SIGNAL_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 

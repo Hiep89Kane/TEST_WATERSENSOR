@@ -8,3 +8,4 @@
 ../Core/Src/COMMON/common.c:132:6:lstrncpy	32	static
 ../Core/Src/COMMON/common.c:142:6:lstrncat	32	static
 ../Core/Src/COMMON/common.c:154:19:Get_Edge	24	static
+../Core/Src/COMMON/common.c:171:13:Systick_ReadInput_poll	24	static

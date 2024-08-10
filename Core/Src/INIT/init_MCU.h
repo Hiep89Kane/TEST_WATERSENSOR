@@ -4,6 +4,8 @@
 /*//=========================================== BASE IO FUNCTIONS for OUTPUT CONTROL ===================================================*/
 void LED1_BaseCtrl(uint8_t ON_OFF);
 void LED2_BaseCtrl(uint8_t ON_OFF);
+void LEDG_BaseCtrl(uint8_t ON_OFF);
+void LEDB_BaseCtrl(uint8_t ON_OFF);
 void BUZ_BaseCtrl(uint8_t ON_OFF);
 // AutoFill IO
 void AF_RLCOM_BaseCtrl(uint8_t ON_OFF);

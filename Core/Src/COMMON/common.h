@@ -147,5 +147,6 @@ unsigned int string2uint(char *str);
 unsigned char string2hexchar(char *str);
 char string2charxx(char *str);
 
-Edge_ReturnStatus Get_Edge(uint8_t Pin_stt);
+Edge_ReturnStatus Get_Edge(uint8_t Pin_stt,uint8_t *PinOlder_stt);
+LogicStatus Systick_ReadInput_poll(uint8_t InputIndex, GPIO_PinState Input, uint16_t LowSample_ms, uint16_t HighSample_ms);
 #endif /* INC_COMMON_H_ */

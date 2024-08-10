@@ -46,10 +46,12 @@ Core/Src/TEST_SENSOR/testWaterSensor.o: \
  D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/output/output.h \
  d:\1_nguyen_van_hiep\25_stm32cubeide_workspace\0_2h1t_library\timevirtural\timer_virtural.h \
  D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/kalman/kalman.h \
- ../Core/Src/PUTCHAR/putchar.h ../Core/Src/INA219/Adafruit_INA219.h \
- ../Core/Src/LCD_i2c/lcd_i2c.h ../Core/Src/LCD_i2c/lcd_display.h \
- ../Core/Src/INIT/init_MCU.h ../Core/Src/CAP_SENSOR/Uv_CapSS.h \
+ ../Core/Src/PUTCHAR/putchar.h ../Core/Src/FLASH/flash.h \
+ ../Core/Src/INA219/Adafruit_INA219.h ../Core/Src/LCD_i2c/lcd_i2c.h \
+ ../Core/Src/LCD_i2c/lcd_display.h ../Core/Src/INIT/init_MCU.h \
+ ../Core/Src/CAP_SENSOR/Uv_CapSS.h \
  ../Core/Src/CAP_SENSOR/CapSS_interface.h \
+ ../Core/Src/testDcMotor/testDcMotor.h \
  ../Core/Src/TEST_SENSOR/testWaterSensor.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h
 ../Core/Inc/myHeader.h:
@@ -102,11 +104,13 @@ D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/output/output.h:
 d:\1_nguyen_van_hiep\25_stm32cubeide_workspace\0_2h1t_library\timevirtural\timer_virtural.h:
 D:/1_NGUYEN_VAN_HIEP/25_STM32CubeIDE_Workspace/0_2H1T_Library/kalman/kalman.h:
 ../Core/Src/PUTCHAR/putchar.h:
+../Core/Src/FLASH/flash.h:
 ../Core/Src/INA219/Adafruit_INA219.h:
 ../Core/Src/LCD_i2c/lcd_i2c.h:
 ../Core/Src/LCD_i2c/lcd_display.h:
 ../Core/Src/INIT/init_MCU.h:
 ../Core/Src/CAP_SENSOR/Uv_CapSS.h:
 ../Core/Src/CAP_SENSOR/CapSS_interface.h:
+../Core/Src/testDcMotor/testDcMotor.h:
 ../Core/Src/TEST_SENSOR/testWaterSensor.h:
 ../Drivers/CMSIS/Include/cmsis_gcc.h:

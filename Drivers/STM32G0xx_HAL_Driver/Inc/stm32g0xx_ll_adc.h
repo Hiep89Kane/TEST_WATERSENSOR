@@ -840,7 +840,7 @@ function @ref LL_ADC_REG_SetSequencerLength(). */
 /** @defgroup ADC_LL_EC_REG_SEQ_SCAN_DIRECTION  ADC group regular - Sequencer scan direction
   * @{
   */
-#define LL_ADC_REG_SEQ_SCAN_DIR_FORWARD    (0x00000000UL)      /*!< On this STM32 series, parameter relevant only if
+#define LL_ADC_REG_SEQ_SCAN_DIR_LEFT    (0x00000000UL)      /*!< On this STM32 series, parameter relevant only if
 sequencer set to mode not fully configurable, refer to function @ref LL_ADC_REG_SetSequencerConfigurable().
 ADC group regular sequencer scan direction forward: from lowest channel number to highest channel number (scan of
 all ranks, ADC conversion of ranks with channels enabled in sequencer). On some other STM32 series, this setting
@@ -2910,7 +2910,7 @@ __STATIC_INLINE uint32_t LL_ADC_REG_GetSequencerLength(ADC_TypeDef *ADCx)
   * @rmtoll CFGR1    SCANDIR        LL_ADC_REG_SetSequencerScanDirection
   * @param  ADCx ADC instance
   * @param  ScanDirection This parameter can be one of the following values:
-  *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_FORWARD
+  *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_LEFT
   *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_BACKWARD
   * @retval None
   */
@@ -2929,7 +2929,7 @@ __STATIC_INLINE void LL_ADC_REG_SetSequencerScanDirection(ADC_TypeDef *ADCx, uin
   * @rmtoll CFGR1    SCANDIR        LL_ADC_REG_GetSequencerScanDirection
   * @param  ADCx ADC instance
   * @retval Returned value can be one of the following values:
-  *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_FORWARD
+  *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_LEFT
   *         @arg @ref LL_ADC_REG_SEQ_SCAN_DIR_BACKWARD
   */
 __STATIC_INLINE uint32_t LL_ADC_REG_GetSequencerScanDirection(ADC_TypeDef *ADCx)

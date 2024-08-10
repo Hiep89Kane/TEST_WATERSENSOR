@@ -31,6 +31,7 @@ SUBDIRS := \
 0_2H1T_Library/timeVirtural \
 Core/Src/CAP_SENSOR \
 Core/Src/COMMON \
+Core/Src/FLASH \
 Core/Src/INA219 \
 Core/Src/INIT \
 Core/Src/INTERRUPT \
@@ -38,6 +39,7 @@ Core/Src/LCD_i2c \
 Core/Src/PUTCHAR \
 Core/Src/TEST_SENSOR \
 Core/Src \
+Core/Src/testDcMotor \
 Core/Startup \
 Drivers/STM32G0xx_HAL_Driver/Src \
 

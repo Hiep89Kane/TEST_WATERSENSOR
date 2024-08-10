@@ -1,7 +1,7 @@
 #include "myHeader.h"
 
-void (*callbackSystickHandle)(void) = 0; //&testWaterSensor_systickIrqHandle;
-void (*callbackTimer7IrqHandle)(void) = &testWaterSensor_1msIrqHandle;
+void (*callbackSystickHandle)(void) =&testWaterSensor_1msIrqHandle;//&testWaterSensor_systickIrqHandle;
+void (*callbackTimer7IrqHandle)(void) =0; //&testWaterSensor_1msIrqHandle;
 void (*callbackTimer6IrqHandle)(void) = &UV_CAPSS_periodic_poll;
 
 void (*callbackRxUart1IrqHandle)(void) = 0;

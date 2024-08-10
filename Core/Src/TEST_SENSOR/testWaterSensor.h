@@ -19,9 +19,18 @@
 
 #define _STRING_BUFFER_SIZE	_USER_TEXT_LCD_NUM_COL+1
 
+typedef enum
+{
+  _TEST_NULL,
+  _TEST_ERROR,
+  _TEST_SUCCESS
+}TestResultStt;
+
 typedef enum{
  _LED1,
  _LED2,
+ _LED_OK,
+ _LED_ERROR,
  _RL_PAD,
  _BUZ,
  //..
@@ -30,6 +39,7 @@ typedef enum{
 
 typedef enum {
   _DISPLAY_MAIN=0,
+  _DISPLAY_PHANLOAISENSOR,
   _DISPLAY_PHOTOCELL,
   _DISPLAY_POWER,
   //...
@@ -44,6 +54,7 @@ typedef enum{
   _test_ledGreenOn,
   _test_ledGreenOff,
   _test_finished,
+  _test_countSensor
 }testSenState_t;
 
 typedef enum{
@@ -64,6 +75,35 @@ typedef enum{
   _AS_QuaToi_ERROR  //>3400
 }AnhSangStt_t;
 
+typedef enum{
+  _ID_ADC_probes,					/*!< chanel 0 in DMA array result                          */
+  _ID_ADC_ptcHsink,					/*!< chanel 1 in DMA array result                          */
+  _ID_ADC_ptcBoiler,					/*!< chanel 2 in DMA array result                          */
+  _ID_ADC_hallCurrent,					/*!< chanel 3 in DMA array result                          */
+
+  _ID_ADC_TOTAL
+}DMA_ADCposition_t;
+
+typedef union{
+    struct {
+	    uint8_t 	f_phanLoaiSensor;
+	    uint8_t	byte1;
+	    uint8_t	byte2;
+	    uint8_t 	byte3;
+	    uint8_t	byte4;
+	    uint8_t	byte5;
+	    uint8_t	byte6;
+	    uint8_t	byte7;
+    }Byte_t;
+
+    struct {
+	    uint32_t Word0;
+	    uint32_t Word1;
+    }Word_t;
+
+    uint64_t Dword;
+}Epprom64_u;
+
 typedef struct{
   uint8_t _ledRed,
 	  _lineSignal,
@@ -83,20 +123,13 @@ typedef struct{
   PhotoCell_Status lightStt;
 
   ErrorManager error;
+  uint16_t PassNum,FailNum;
+  TestResultStt	resultTesting;
 
 }TestSSWater_t;
 
-/* =============================================== DMA ADC FUNCTIONS ============================================= */
-typedef enum{
-  _ID_ADC_probes,					/*!< chanel 0 in DMA array result                          */
-  _ID_ADC_ptcHsink,					/*!< chanel 1 in DMA array result                          */
-  _ID_ADC_ptcBoiler,					/*!< chanel 2 in DMA array result                          */
-  _ID_ADC_hallCurrent,					/*!< chanel 3 in DMA array result                          */
-
-  _ID_ADC_TOTAL
-}DMA_ADCposition_t;
-
 extern volatile uint16_t ADC_Arr[_ID_ADC_TOTAL];
+extern Epprom64_u flashDataInfor;
 
 void testWaterSensorInit();
 void testWaterSensorLoop();

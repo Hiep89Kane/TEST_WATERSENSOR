@@ -11,12 +11,14 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/STM32G0xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/testDcMotor/subdir.mk
 -include Core/Src/TEST_SENSOR/subdir.mk
 -include Core/Src/PUTCHAR/subdir.mk
 -include Core/Src/LCD_i2c/subdir.mk
 -include Core/Src/INTERRUPT/subdir.mk
 -include Core/Src/INIT/subdir.mk
 -include Core/Src/INA219/subdir.mk
+-include Core/Src/FLASH/subdir.mk
 -include Core/Src/COMMON/subdir.mk
 -include Core/Src/CAP_SENSOR/subdir.mk
 -include Core/Src/subdir.mk

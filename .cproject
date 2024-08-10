@@ -56,6 +56,8 @@
 									<listOptionValue builtIn="false" value="../Core/Src/PUTCHAR"/>
 									<listOptionValue builtIn="false" value="../Core/Src/CAP_SENSOR"/>
 									<listOptionValue builtIn="false" value="../Core/Src/COMMON"/>
+									<listOptionValue builtIn="false" value="../Core/Src/testDcMotor"/>
+									<listOptionValue builtIn="false" value="../Core/Src/FLASH"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.124445858" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

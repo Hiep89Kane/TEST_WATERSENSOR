@@ -151,12 +151,11 @@ void lstrncat(char *str1, char *str2, unsigned int n)
   str1[i] = 0;
 }
 
-Edge_ReturnStatus Get_Edge(uint8_t Pin_stt)
+Edge_ReturnStatus Get_Edge(uint8_t Pin_stt,uint8_t *PinOlder_stt)
 {
   uint8_t result;
-  static uint8_t Pin_stt_old;
 
-  if (Pin_stt == Pin_stt_old)
+  if (Pin_stt == PinOlder_stt)
     return _NONE;
 
   if (Pin_stt == 0)
@@ -164,6 +163,35 @@ Edge_ReturnStatus Get_Edge(uint8_t Pin_stt)
   else
     result = _RISING;
 
-  Pin_stt_old = Pin_stt;
+  PinOlder_stt = Pin_stt;
   return result;
 }
+
+//==================================== HAM Input Co ban ==================================================================
+LogicStatus Systick_ReadInput_poll(uint8_t InputIndex, GPIO_PinState Input, uint16_t LowSample_ms, uint16_t HighSample_ms)
+{
+  static uint16_t Input_HighCnt[_IN_MAX] = {0};
+  static uint16_t Input_LowCnt[_IN_MAX] = {0};
+  static LogicStatus ReturnVal[_IN_MAX] = {_HIGH};
+
+  if (Input == GPIO_PIN_RESET)
+  {
+    Input_HighCnt[InputIndex] = 0;
+    if (++Input_LowCnt[InputIndex] >= LowSample_ms)
+    {
+      Input_LowCnt[InputIndex] = 0;
+      ReturnVal[InputIndex] = _LOW;
+    }
+  }
+  else if (Input == GPIO_PIN_SET)
+  {
+    Input_LowCnt[InputIndex] = 0;
+    if (++Input_HighCnt[InputIndex] >= HighSample_ms)
+    {
+      Input_HighCnt[InputIndex] = 0;
+      ReturnVal[InputIndex] = _HIGH;
+    }
+  }
+  return ReturnVal[InputIndex];
+}
+

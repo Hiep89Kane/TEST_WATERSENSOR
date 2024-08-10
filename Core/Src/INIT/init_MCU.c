@@ -17,6 +17,22 @@ void LED2_BaseCtrl(uint8_t ON_OFF)
 		LED2_OFF;
 }
 
+void LEDG_BaseCtrl(uint8_t ON_OFF)
+{
+	if (ON_OFF)
+		LEDG_ON;
+	else
+		LEDG_OFF;
+}
+
+void LEDB_BaseCtrl(uint8_t ON_OFF)
+{
+	if (ON_OFF)
+		LEDB_ON;
+	else
+		LEDB_OFF;
+}
+
 void BUZ_BaseCtrl(uint8_t ON_OFF)
 {
 	if (ON_OFF)
