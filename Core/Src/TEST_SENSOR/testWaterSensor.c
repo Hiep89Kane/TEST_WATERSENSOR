@@ -8,26 +8,6 @@
 #define D0_BOTEST_TOIBT_OK		"Toi Bt     "
 #define D0_BOTEST_QUATOI_LOI		"Loi Qua Toi"
 
-//#define D0_SUTAP_LOI			"E1-Sut ap < 4V"
-//#define D0_GHIM_CONNECTOR		" Ghim Connector"
-//#define D0_QUADONG_LOI			"E2-Qua Dong>70mA"
-//#define D0_CHECK_LED_RED		"  Check Led Do"
-//#define D0_GHIM_PADDONG			" Ghim Pad dong"
-//#define D0_LEDGREEN_LUONSANG_LOI	"E4-Loi LedXanh_1"
-//#define D0_LED_RED_LOI			"E3-Loi Led Do"
-//#define D0_LED_LOI_QUADONG		"E2-Qua Dong>25mA"
-//#define D0_LED_RED_SANG_OK		"  1-Led Do Ok"
-//#define D0_LED_RED_TAT_OK		"  0-Led Do Ok"
-//#define D0_LED_RED_X_OK			"  X-Led Do Ok"
-//#define D0_CALIB_OK			"    Calib Ok"
-//#define D0_CALIB_LOI			"E8-Calib Fail"
-//#define D0_LEDGREEN_SANG		"Sensor xanh On"
-//#define D0_DAYLOGIC_LUON0_LOI		"E7-LoiDayTrang_0"
-//#define D0_DAYLOGIC_LUON1_LOI		"E6-LoiDayTrang_1"
-//#define D0_LEDGREEN_LUON0_LOI		"E5-Loi LedXanh_0"
-//#define D0_LEDGREEN_LUON1_LOI		"E4-Loi LedXanh_1"
-//#define D0_SENSOR_OK			"   Sensor OK"
-
 #define D0_SUTAP_LOI			"E3 - Sut ap < 4V"
 #define D0_GHIM_CONNECTOR		" Ghim Connector "
 #define D0_QUADONG_LOI			"E4-Qua Dong>70mA"
@@ -49,9 +29,9 @@
 #define D0_SENSOR_OK			"   Sensor OK"
 
 //càng sáng càng giam
-#define PHOTOCELL_IS_NOSEN(x)		(x>=1000 && x<=2000)?1:0
-#define PHOTOCELL_IS_HAVESEN(x)		(x>=2200)?1:0			//Tối
-#define PHOTOCELL_IS_HAVESEN_GREENON(x)	(x>=200 && x<=500)?1:0
+#define PHOTOCELL_IS_NOSEN(x)		(x>=1000 && x<=2000)?1:0	//ko Sensor
+#define PHOTOCELL_IS_HAVESEN(x)		(x>=2200)?1:0			//có Sensor
+#define PHOTOCELL_IS_HAVESEN_GREENON(x)	(x>=200 && x<=500)?1:0		//có Sensor + led Green sáng
 
 OUTPUT_t _ctrlOutput[_MAX_OUTPUT];
 button_t _btnConfig;
@@ -68,9 +48,10 @@ timer_virtual_t _timeoutCheckState,
 		_timer_updateLCD;
 
 uint8_t	f_readKalmanAdc;
-char stringBuffer[13];
 uint8_t f_checkLedXanh=0;
 uint8_t ledRedTog=0;
+char stringBuffer[13];
+
 /*Function Declare*/
 void updateLcd();
 void updateIna219();
@@ -79,6 +60,7 @@ void callback_calibGetResult(CheckStatus True_false);
 void gotoFinished(TestResultStt success_error);
 void callback_btnConfigHandle(uint16_t ID, bt_eventFunc_t eventFunc, bt_typeArg_t agr);
 
+//Các giá trị lấy từ thực tế
 PhotoCell_Status getBright(){
   uint16_t SaiSo_toi;
 
@@ -120,7 +102,7 @@ PhotoCell_Status getBright(){
 
   if(ADC_Arr[_ID_ADC_ptcHsink]==0)
     return _PhotoCell_noInit;
-  else if(_LIMIT(ADC_Arr[_ID_ADC_ptcHsink],100,910))//cu 900
+  else if(_LIMIT(ADC_Arr[_ID_ADC_ptcHsink],100,910))
       return _PhotoCell_LedGreenOn;
   else if(_LIMIT(ADC_Arr[_ID_ADC_ptcHsink],911,3800-SaiSo_toi))
     return _PhotoCell_uncovered;
@@ -143,7 +125,7 @@ void updateLcd(){
   //Hien hien LCD theo mode
   if(TOOL.Lcd_id==_DISPLAY_MAIN)
   {
-      if(flashDataInfor.Byte_t.f_phanLoaiSensor==_ENABLE)sprintf(TOOL.LcdStr_row[1],"LOI:%3u   OK:%3u",TOOL.FailNum,TOOL.PassNum);
+      if(flashDataInfor.Byte_t.f_phanLoaiSensor==_ENABLE)sprintf(TOOL.LcdStr_row[1],"LOI:%4u OK:%4u",TOOL.FailNum,TOOL.PassNum);
   }
   else if(TOOL.Lcd_id==_DISPLAY_PHOTOCELL)
   {
@@ -226,6 +208,10 @@ void callback_btnConfigHandle(uint16_t ID, bt_eventFunc_t eventFunc, bt_typeArg_
       if(agr.event == BUTTON_ONECLICK){
 	  if(TOOL.Lcd_id==_DISPLAY_PHANLOAISENSOR){
 	      flashDataInfor.Byte_t.f_phanLoaiSensor=(flashDataInfor.Byte_t.f_phanLoaiSensor==_ENABLE)?_DISABLE:_ENABLE;
+	      if(flashDataInfor.Byte_t.f_phanLoaiSensor==_ENABLE){
+		  flashDataInfor.HalfWord_t.countPassSensor=0;
+		  flashDataInfor.HalfWord_t.countFailSensor=0;
+	      }
 	      Flash_WriteDWord(flashDataInfor.Dword, FLASH_ADDRESS_START);
 	  }
 	  else NVIC_SystemReset();
@@ -304,6 +290,10 @@ void testWaterSensorInit(){
   //Load data
   flashDataInfor.Dword = Flash_ReadDWord(FLASH_ADDRESS_START);
   flashDataInfor.Byte_t.f_phanLoaiSensor=(flashDataInfor.Byte_t.f_phanLoaiSensor==0)?_DISABLE:_ENABLE;
+  TOOL.PassNum = (flashDataInfor.HalfWord_t.countPassSensor == 0xffff)?(260):(flashDataInfor.HalfWord_t.countPassSensor);
+  TOOL.FailNum = (flashDataInfor.HalfWord_t.countFailSensor == 0xffff)?(260):(flashDataInfor.HalfWord_t.countFailSensor);
+//  if(flashDataInfor.Byte_t.countPassSensor==0xff)flashDataInfor.Byte_t.countPassSensor=0;
+//  if(flashDataInfor.Byte_t.countFailSensor==0xff)flashDataInfor.Byte_t.countFailSensor=0;
 
   //clear all error
   memset(&TOOL.error,1,sizeof(TOOL.error));
@@ -358,6 +348,7 @@ void testWaterSensorTask()
       if(TWMOTOR.atPosition==_POS_LEFT){
 	  if(Get_Edge(TWMOTOR.SWTS.Bit.RIGHT_IR,&irRightOlderStt)==_FALLING){
 	      TOOL.PassNum++;
+	      flashDataInfor.HalfWord_t.countPassSensor=TOOL.PassNum;
 	      TOOL.state=_test_null;
 	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
 	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
@@ -369,6 +360,7 @@ void testWaterSensorTask()
       else if(TWMOTOR.atPosition==_POS_RIGHT){
 	  if(Get_Edge(TWMOTOR.SWTS.Bit.LEFT_IR,&irLeftOlderStt)==_FALLING){
 	      TOOL.FailNum++;
+	      flashDataInfor.HalfWord_t.countFailSensor=TOOL.FailNum;
 	      TOOL.state=_test_null;
 	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
 	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
@@ -376,6 +368,7 @@ void testWaterSensorTask()
 	      if(TWMOTOR.SWTS.Bit.LEFT_IR)MotorGotoPosition(&TWMOTOR,_POS_MID,_TIMEOUT_MOTOR);
 	  }
       }
+      Flash_WriteDWord(flashDataInfor.Dword, FLASH_ADDRESS_START);
   }
 
   if(!timer_expired(&_timeoutCheckState))
@@ -414,6 +407,7 @@ void testWaterSensorTask()
       if(TOOL.current <= 0.4)
       {
 	  sprintf(TOOL.LcdStr_row[0],D0_GHIM_CONNECTOR);
+	  retryReadLedGreenOn=0;
       }
       //Nếu mới cắm vào led xanh sáng luôn
       else if(TOOL.current > 0.4 && TOOL.current < 50)
@@ -428,7 +422,7 @@ void testWaterSensorTask()
 		sprintf(TOOL.LcdStr_row[0],"Dang Khoi Dong");
 		TOOL.state=_test_start;
 		retryCalib=0;
-		timer_set(&_timeoutCheckState, 1500);//cũ là 1000 vẫn lỗi
+		timer_set(&_timeoutCheckState, 2000);//cũ là 1000 vẫn lỗi
 	    }
 	  }
 	  else
@@ -491,6 +485,7 @@ void testWaterSensorTask()
       else
       {
 	  sprintf(TOOL.LcdStr_row[0],D0_LEDGREEN_LUON0_LOI);
+
       }
 
       if(++retryReadLedGreenOn > 10)
@@ -604,6 +599,8 @@ void testWaterSensorTask()
 	  else {
 	      TOOL.state = _test_null;
 	      sprintf(TOOL.LcdStr_row[0],"Tiep Tuc Test..");
+	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
+	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
 	  }
 
 	  OUTPUT_setOff(&_ctrlOutput[_BUZ],0);

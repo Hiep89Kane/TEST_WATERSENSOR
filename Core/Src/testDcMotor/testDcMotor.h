@@ -43,7 +43,7 @@ typedef union{
 }ManageSwtStt;
 
 typedef struct{
-  ManageSwtStt		SWTS; //quản lí tất cả Input đầu vào
+  ManageSwtStt		SWTS; 			//quản lí tất cả Input đầu vào
   Drv8251DirCtrl_e	motorState;		//trạng thái hoạt động của motor
   PositionMotor_t	atPosition,		//Vị trí motor đang đứng
 			goPosition;		//Vị trí đang muốn đến
@@ -53,13 +53,14 @@ typedef struct{
 extern MotorTestWater_t TWMOTOR;
 
 void Drv8251_Control(Drv8251DirCtrl_e control);
+
 void testMotorWaterInit();
 void testMotorWaterLoop();
-//void testMotorSystickIrq1ms();
 
 void MotorGotoPosition(MotorTestWater_t *mtor,PositionMotor_t gotoPositon,uint32_t timeOut_ms);
 void MotorTestWaterSensorInit(MotorTestWater_t *mtor);
 void MotorTestWaterSensorLoop(MotorTestWater_t *mtor);
+
 void testMotorSystickIrq1ms(MotorTestWater_t *mtor);
 
 

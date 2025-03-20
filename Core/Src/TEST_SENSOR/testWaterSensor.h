@@ -97,6 +97,13 @@ typedef union{
     }Byte_t;
 
     struct {
+	    uint16_t Word0;
+	    uint16_t Word1;
+	    uint16_t countPassSensor;
+	    uint16_t countFailSensor;
+    }HalfWord_t;
+
+    struct {
 	    uint32_t Word0;
 	    uint32_t Word1;
     }Word_t;

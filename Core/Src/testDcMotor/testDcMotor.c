@@ -83,14 +83,9 @@ void testMotorSystickIrq1ms(MotorTestWater_t *mtor){
   mtor->SWTS.Bit.RIGHT_SWT= Systick_ReadInput_poll(_IN_SW_RIGHT,SWTRIGHT_PinStt,10,10);
   mtor->SWTS.Bit.MID_SWT  = Systick_ReadInput_poll(_IN_SW_MID,SWTMID_PinStt,10,10);
   mtor->SWTS.Bit.LEFT_SWT = Systick_ReadInput_poll(_IN_SW_LEFT,SWTLEFT_PinStt,10,10);
-  mtor->SWTS.Bit.RIGHT_IR = Systick_ReadInput_poll(_IN_IR_LEFT,IRRIGHT_PinStt,2,2);
-  mtor->SWTS.Bit.LEFT_IR = Systick_ReadInput_poll(_IN_IR_RIGHT,IRLEFT_PinStt,2,2);
 
-//  mtor->SWTS.Bit.RIGHT_SWT= INPUT_readHanlde(_IN_SW_RIGHT,&swtCnt[_IN_SW_RIGHT][0],&swtCnt[_IN_SW_RIGHT][1],20,&swtCnt[_IN_SW_RIGHT][2],20);
-//  mtor->SWTS.Bit.MID_SWT  = INPUT_readHanlde(_IN_SW_MID,&swtCnt[_IN_SW_MID][0],&swtCnt[_IN_SW_MID][1],20,&swtCnt[_IN_SW_MID][2],20);
-//  mtor->SWTS.Bit.LEFT_SWT = INPUT_readHanlde(_IN_SW_LEFT,&swtCnt[_IN_SW_LEFT][0],&swtCnt[_IN_SW_LEFT][1],20,&swtCnt[_IN_SW_LEFT][2],20);
-//  mtor->SWTS.Bit.RIGHT_IR = INPUT_readHanlde(_IN_SW_LEFT,&swtCnt[_IN_SW_RIGHT][0],&swtCnt[_IN_SW_RIGHT][1],20,&swtCnt[_IN_SW_RIGHT][2],20);
-//  mtor->SWTS.Bit.LEFT_IR = INPUT_readHanlde(_IN_SW_MID,&swtCnt[_IN_SW_RIGHT][0],&swtCnt[_IN_SW_RIGHT][1],20,&swtCnt[_IN_SW_RIGHT][2],20);
+  mtor->SWTS.Bit.RIGHT_IR = IRRIGHT_PinStt;//Systick_ReadInput_poll(_IN_IR_LEFT,IRRIGHT_PinStt,2,2);
+  mtor->SWTS.Bit.LEFT_IR = IRLEFT_PinStt;//Systick_ReadInput_poll(_IN_IR_RIGHT,IRLEFT_PinStt,2,2);
 
   //update Posistion
   if(mtor->SWTS.Bit.LEFT_SWT==0 && mtor->SWTS.Bit.MID_SWT && mtor->SWTS.Bit.RIGHT_SWT) mtor->atPosition = _POS_LEFT;

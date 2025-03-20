@@ -79,8 +79,7 @@ static void MX_TIM7_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-timer_virtual_t _timerTestMotor;
-PositionMotor_t pos,posOlder;
+
 /* USER CODE END 0 */
 
 /**
@@ -123,11 +122,9 @@ int main(void)
   MX_I2C2_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
+
   testWaterSensorInit();
-//  timer_set(&_timerTestMotor, 10000);
-//  pos=_POS_MID;
-//  posOlder=_POS_LEFT;
-//  MotorGotoPosition(&TWMOTOR,pos,5000);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -140,17 +137,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
       testWaterSensorLoop();
-//      if(timer_expired(&_timerTestMotor)){
-//	  timer_restart(&_timerTestMotor);
-//	  if(pos==_POS_LEFT)pos=_POS_MID;
-//	  else if(pos==_POS_RIGHT)pos=_POS_MID;
-//	  else if(pos==_POS_MID){
-//	      if(posOlder==_POS_LEFT)pos=_POS_RIGHT;
-//	      else if(posOlder==_POS_RIGHT)pos=_POS_LEFT;
-//	      posOlder=pos;
-//	  }
-//	  MotorGotoPosition(&TWMOTOR,pos,10000);
-//      }
   }
   /* USER CODE END 3 */
 }

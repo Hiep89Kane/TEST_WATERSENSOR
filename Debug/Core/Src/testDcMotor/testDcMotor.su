@@ -2,6 +2,6 @@
 ../Core/Src/testDcMotor/testDcMotor.c:42:6:testMotorWaterInit	8	static
 ../Core/Src/testDcMotor/testDcMotor.c:49:6:testMotorWaterLoop	8	static
 ../Core/Src/testDcMotor/testDcMotor.c:82:6:testMotorSystickIrq1ms	16	static
-../Core/Src/testDcMotor/testDcMotor.c:103:6:MotorTestWaterSensorInit	16	static
-../Core/Src/testDcMotor/testDcMotor.c:109:6:MotorTestWaterSensorLoop	16	static
-../Core/Src/testDcMotor/testDcMotor.c:135:6:MotorGotoPosition	24	static
+../Core/Src/testDcMotor/testDcMotor.c:98:6:MotorTestWaterSensorInit	16	static
+../Core/Src/testDcMotor/testDcMotor.c:104:6:MotorTestWaterSensorLoop	16	static
+../Core/Src/testDcMotor/testDcMotor.c:130:6:MotorGotoPosition	24	static

@@ -6,8 +6,8 @@
 ../Core/Src/TEST_SENSOR/testWaterSensor.c:196:6:callback_calibGetResult	24	static
 ../Core/Src/TEST_SENSOR/testWaterSensor.c:206:6:gotoFinished	24	static
 ../Core/Src/TEST_SENSOR/testWaterSensor.c:222:6:callback_btnConfigHandle	24	static
-../Core/Src/TEST_SENSOR/testWaterSensor.c:265:6:testWaterSensorInit	16	static
-../Core/Src/TEST_SENSOR/testWaterSensor.c:325:6:testWaterSensor_1msIrqHandle	16	static
-../Core/Src/TEST_SENSOR/testWaterSensor.c:351:6:testWaterSensorTask	16	static
-../Core/Src/TEST_SENSOR/testWaterSensor.c:628:6:testWaterSensorLoop	8	static
-../Core/Src/TEST_SENSOR/testWaterSensor.c:639:6:CheckResultSystem	16	static
+../Core/Src/TEST_SENSOR/testWaterSensor.c:269:6:testWaterSensorInit	16	static
+../Core/Src/TEST_SENSOR/testWaterSensor.c:333:6:testWaterSensor_1msIrqHandle	16	static
+../Core/Src/TEST_SENSOR/testWaterSensor.c:359:6:testWaterSensorTask	16	static
+../Core/Src/TEST_SENSOR/testWaterSensor.c:643:6:testWaterSensorLoop	8	static
+../Core/Src/TEST_SENSOR/testWaterSensor.c:654:6:CheckResultSystem	16	static

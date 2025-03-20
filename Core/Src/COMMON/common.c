@@ -155,7 +155,7 @@ Edge_ReturnStatus Get_Edge(uint8_t Pin_stt,uint8_t *PinOlder_stt)
 {
   uint8_t result;
 
-  if (Pin_stt == PinOlder_stt)
+  if (Pin_stt == *PinOlder_stt)
     return _NONE;
 
   if (Pin_stt == 0)
@@ -163,7 +163,7 @@ Edge_ReturnStatus Get_Edge(uint8_t Pin_stt,uint8_t *PinOlder_stt)
   else
     result = _RISING;
 
-  PinOlder_stt = Pin_stt;
+  *PinOlder_stt = Pin_stt;
   return result;
 }
 
