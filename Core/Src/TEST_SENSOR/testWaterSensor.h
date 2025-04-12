@@ -130,6 +130,7 @@ typedef struct{
   PhotoCell_Status lightStt;
 
   ErrorManager error;
+  uint8_t ledRedTog;
   uint16_t PassNum,FailNum;
   TestResultStt	resultTesting;
 

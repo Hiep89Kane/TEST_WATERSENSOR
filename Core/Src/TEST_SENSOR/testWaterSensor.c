@@ -37,7 +37,6 @@ OUTPUT_t _ctrlOutput[_MAX_OUTPUT];
 button_t _btnConfig;
 
 volatile uint16_t ADC_Arr[_ID_ADC_TOTAL];
-//static Kalman_t Kalman_ADC[_ID_ADC_TOTAL];
 TestSSWater_t TOOL;
 Epprom64_u flashDataInfor;
 timer_virtual_t _timeoutCheckState,
@@ -49,7 +48,6 @@ timer_virtual_t _timeoutCheckState,
 
 uint8_t	f_readKalmanAdc;
 uint8_t f_checkLedXanh=0;
-uint8_t ledRedTog=0;
 char stringBuffer[13];
 
 /*Function Declare*/
@@ -165,16 +163,6 @@ void updateIna219(){
   TOOL.power = getPower_mW();
 }
 
-void updateKalmanADC(){
-//  if(f_readKalmanAdc){
-//    //Read adc
-//    for(uint8_t i=0; i<_ID_ADC_TOTAL; i++){
-//	ADC_Arr[i] = (uint16_t) (km_process(&Kalman_ADC[i], (float) ADC_Arr[i]));
-//    }
-//    f_readKalmanAdc=0;
-//  }
-}
-
 void callback_calibGetResult(CheckStatus True_false){
   if(True_false==0){
       OUTPUT_setBlink(&_ctrlOutput[_LED1],10,200,400,0);
@@ -189,13 +177,15 @@ void gotoFinished(TestResultStt success_error){
   TOOL.resultTesting=success_error;
   if(success_error==_TEST_ERROR){
       MotorGotoPosition(&TWMOTOR,_POS_RIGHT,_TIMEOUT_MOTOR);
-      if(flashDataInfor.Byte_t.f_phanLoaiSensor==_DISABLE)OUTPUT_setBlink(&_ctrlOutput[_BUZ],1,100,200,1);
-      OUTPUT_setOn(&_ctrlOutput[_LED_ERROR],0);
+      //if(flashDataInfor.Byte_t.f_phanLoaiSensor==_DISABLE)
+	OUTPUT_setBlink(&_ctrlOutput[_BUZ],10,200,400,1);
+	OUTPUT_setBlink(&_ctrlOutput[_LED_ERROR],1,500,1000,1);
       TOOL.state=_test_finished;
   }if(success_error==_TEST_SUCCESS){
       MotorGotoPosition(&TWMOTOR,_POS_LEFT,_TIMEOUT_MOTOR);
-      if(flashDataInfor.Byte_t.f_phanLoaiSensor==_DISABLE)OUTPUT_setBlink(&_ctrlOutput[_BUZ],1,1000,1200,0);
-      OUTPUT_setOn(&_ctrlOutput[_LED_OK],0);
+      //if(flashDataInfor.Byte_t.f_phanLoaiSensor==_DISABLE)
+	OUTPUT_setBlink(&_ctrlOutput[_BUZ],1,1000,2000,1);
+	OUTPUT_setBlink(&_ctrlOutput[_LED_OK],1,500,1000,1);
       TOOL.state=_test_finished;
   }
 }
@@ -251,17 +241,12 @@ void callback_btnConfigHandle(uint16_t ID, bt_eventFunc_t eventFunc, bt_typeArg_
 void testWaterSensorInit(){
 
   /*Init DMA ADC */
-  //Init DMA_ADC of MCU
   if(HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK)
 	  Error_Handler();
 
   if(HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC_Arr, _ID_ADC_TOTAL) != HAL_OK)
 	  Error_Handler();
 
-//  //Init Kalman Adc filter
-//  for(uint8_t i=0;i<_ID_ADC_TOTAL; i++){
-//      km_init(&Kalman_ADC[i], 0.01, 20, 4050);
-//  }
   //setCalibration_32V_1A();
   setCalibration_16V_400mA();
   /*Init i2c2 for LCD and Ina219 */
@@ -283,24 +268,20 @@ void testWaterSensorInit(){
 
   OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
   OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
-//  OUTPUT_setBlink(&_ctrlOutput[_LED_OK],7,200,400,0);
-//  OUTPUT_setBlink(&_ctrlOutput[_LED_ERROR],5,300,600,0);
   OUTPUT_setBlink(&_ctrlOutput[_BUZ],1,200,400,0);
-
-  //Load data
-  flashDataInfor.Dword = Flash_ReadDWord(FLASH_ADDRESS_START);
-  flashDataInfor.Byte_t.f_phanLoaiSensor=(flashDataInfor.Byte_t.f_phanLoaiSensor==0)?_DISABLE:_ENABLE;
-  TOOL.PassNum = (flashDataInfor.HalfWord_t.countPassSensor == 0xffff)?(260):(flashDataInfor.HalfWord_t.countPassSensor);
-  TOOL.FailNum = (flashDataInfor.HalfWord_t.countFailSensor == 0xffff)?(260):(flashDataInfor.HalfWord_t.countFailSensor);
-//  if(flashDataInfor.Byte_t.countPassSensor==0xff)flashDataInfor.Byte_t.countPassSensor=0;
-//  if(flashDataInfor.Byte_t.countFailSensor==0xff)flashDataInfor.Byte_t.countFailSensor=0;
 
   //clear all error
   memset(&TOOL.error,1,sizeof(TOOL.error));
   TOOL.state = _test_null;
-  TOOL.adcLightStart=0;
   TOOL.Lcd_id=_DISPLAY_MAIN;
-  ledRedTog=0;
+  TOOL.adcLightStart=0;
+  TOOL.ledRedTog=0;
+
+  //Load data
+  flashDataInfor.Dword = Flash_ReadDWord(FLASH_ADDRESS_START);
+  flashDataInfor.Byte_t.f_phanLoaiSensor=(flashDataInfor.Byte_t.f_phanLoaiSensor==0)?_DISABLE:_ENABLE;
+  TOOL.PassNum = (flashDataInfor.HalfWord_t.countPassSensor == 0xffff)?(1150):(flashDataInfor.HalfWord_t.countPassSensor);
+  TOOL.FailNum = (flashDataInfor.HalfWord_t.countFailSensor == 0xffff)?(1150):(flashDataInfor.HalfWord_t.countFailSensor);
 
   timer_set(&_timer_updateIna219, 50);
   timer_set(&_timer_updateLCD, 2000);
@@ -352,8 +333,10 @@ void testWaterSensorTask()
 	      TOOL.state=_test_null;
 	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
 	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
+	      OUTPUT_setOff(&_ctrlOutput[_BUZ],0);
 	      delay_ms(500);
 	      if(TWMOTOR.SWTS.Bit.RIGHT_IR)MotorGotoPosition(&TWMOTOR,_POS_MID,_TIMEOUT_MOTOR);
+	      Flash_WriteDWord(flashDataInfor.Dword, FLASH_ADDRESS_START);
 	  }
       }
       //Ngược lại : Sensor Fail
@@ -364,11 +347,12 @@ void testWaterSensorTask()
 	      TOOL.state=_test_null;
 	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
 	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
+	      OUTPUT_setOff(&_ctrlOutput[_BUZ],0);
 	      delay_ms(500);
 	      if(TWMOTOR.SWTS.Bit.LEFT_IR)MotorGotoPosition(&TWMOTOR,_POS_MID,_TIMEOUT_MOTOR);
+	      Flash_WriteDWord(flashDataInfor.Dword, FLASH_ADDRESS_START);
 	  }
       }
-      Flash_WriteDWord(flashDataInfor.Dword, FLASH_ADDRESS_START);
   }
 
   if(!timer_expired(&_timeoutCheckState))
@@ -553,19 +537,19 @@ void testWaterSensorTask()
       //Đo dòng điện
       TOOL.current = getCurrent_mA();
       //Kiểm tra led đỏ nhấp nháy
-      if((ledRedTog%2==0) && _LIMIT(TOOL.current,0.8,6))
+      if((TOOL.ledRedTog%2==0) && _LIMIT(TOOL.current,0.8,6))
       {
-	ledRedTog++;
+	  TOOL.ledRedTog++;
 	curLedRedOff = TOOL.current;
       }
-      else if((ledRedTog%2==1) && _LIMIT(TOOL.current,10,20))
+      else if((TOOL.ledRedTog%2==1) && _LIMIT(TOOL.current,10,20))
       {
-	ledRedTog++;
+	  TOOL.ledRedTog++;
 	curLedRedOn =  TOOL.current;
       }
 
       //OK
-      if(ledRedTog>2)
+      if(TOOL.ledRedTog>2)
       {
 	  if(_LIMIT(curLedRedOff,0.8,1.5))//&&_LIMIT(curLedRedOn,9,15.5))
 		sprintf(TOOL.LcdStr_row[0],D0_LED_RED_SANG_OK);
@@ -585,13 +569,9 @@ void testWaterSensorTask()
     case _test_finished:
       timer_set(&_timeoutCheckState,5);
       TOOL.current = getCurrent_mA();
-      //if(TOOL.current <= 0.4 || TOOL.lightStt==_PhotoCell_uncovered){
+
+      //Nếu đã rút sensor ra
       if(TOOL.current <= 0.4){
-	  //Rut Sensor ra moi mo nap phan loai => quá châmj
-//	  if(TOOL.resultTesting==_TEST_ERROR)
-//	    MotorGotoPosition(&TWMOTOR,_POS_RIGHT,_TIMEOUT_MOTOR);
-//	  else if(TOOL.resultTesting==_TEST_SUCCESS)
-//	    MotorGotoPosition(&TWMOTOR,_POS_LEFT,_TIMEOUT_MOTOR);
 	  if(flashDataInfor.Byte_t.f_phanLoaiSensor==_ENABLE){
 	      TOOL.state=_test_countSensor;
 	      sprintf(TOOL.LcdStr_row[0],"Phan Loai Sensor");
@@ -601,15 +581,17 @@ void testWaterSensorTask()
 	      sprintf(TOOL.LcdStr_row[0],"Tiep Tuc Test..");
 	      OUTPUT_setOff(&_ctrlOutput[_LED_OK],0);
 	      OUTPUT_setOff(&_ctrlOutput[_LED_ERROR],0);
+	      OUTPUT_setOff(&_ctrlOutput[_BUZ],0);
 	  }
 
-	  OUTPUT_setOff(&_ctrlOutput[_BUZ],0);
 	  timer_stop(&_timeoutCheckLedRed);
 	  timer_stop(&_timeoutCheckCalib);
 	  timer_stop(&_timeoutCheckLedGreenOff);
 	  timer_set(&_timeoutCheckState,500);
-	  ledRedTog=0;
-      }else {
+	  TOOL.ledRedTog=0;
+      }
+      else
+      {
 	//Phat hien cong nhan lam bay
 	timer_set(&_timeoutCheckState,5);
 	if(TWMOTOR.SWTS.Bit.LEFT_IR==0 && TWMOTOR.SWTS.Bit.RIGHT_IR==0 && getCurrent_mA()<0.4){
@@ -625,7 +607,6 @@ void testWaterSensorTask()
 void testWaterSensorLoop(){
   updateLcd();
   updateIna219();
-  updateKalmanADC();
   CapSS_Task(&CAPSENSOR[0]);
 
   testWaterSensorTask();
